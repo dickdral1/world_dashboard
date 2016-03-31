@@ -59,5 +59,4 @@ The legend is a seperate Oracle JET component.
 - Sunburst Chart: sometimes choosing the country by clicking does not work
 - Maps: sometimes in Chrome and Safari the maps show an error message. Making the window larger may and reloading may fix this problem.
 - Maps: Separate maps for Asia and Australia are not available, so for these area's the World map is shown
-- Sometimes specific data are not available for a country. In the table the corresponding cells are left empty. 
-- 
+- Sometimes specific data are not available for a country. In the table the corresponding cells are left empty
