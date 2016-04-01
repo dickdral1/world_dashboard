@@ -1,4 +1,5 @@
-#Installation
+INSTALLATION
+
 When the data is installed all that is needed is:
 - an Apex workspace with access to the data
 - import of the awd_application.sql file that contains the application definition
