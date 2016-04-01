@@ -27,7 +27,7 @@ prompt APPLICATION 132 - Apex Dashboard Competition
 -- Application Export:
 --   Application:     132
 --   Name:            Apex Dashboard Competition
---   Date and Time:   18:25 Friday April 1, 2016
+--   Date and Time:   21:41 Friday April 1, 2016
 --   Exported By:     ADC
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -110,7 +110,7 @@ wwv_flow_api.create_flow(
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
 ,p_last_updated_by=>'ADC'
-,p_last_upd_yyyymmddhh24miss=>'20160331222953'
+,p_last_upd_yyyymmddhh24miss=>'20160401211446'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_ui_type_name => null
@@ -9716,15 +9716,19 @@ wwv_flow_api.create_page(
 '  $(this).attr(''onclick'',''alert(\''''+country+''\'');'');',
 '}); */',
 '    ',
-'    $(''svg g'').has(''text'').click( function() {',
+'    $(''svg g[cursor="pointer"]'').has(''text'').click( function() {',
 '      elem = $(this).find(''text'').html();',
 '      id = countryId[elem];',
 '      if ( id ) ',
 '      { ',
 '        apex.item(''P1_COUNTRY_ID'').setValue(id);',
-'        console.log(''Country ID=''+id);',
+'        console.log(elem+''=''+id);',
 '        apex.submit(''DRILL'');',
 '      }',
+'      else',
+'          {',
+'              console.log(''Country ''+elem+''not found'');',
+'          }',
 '   });',
 '',
 '}',
@@ -9795,6 +9799,46 @@ wwv_flow_api.create_page(
 '        }',
 '   }',
 '}',
+'',
+'',
+'/******************************************************',
+' * Set values for type and texts',
+' *',
+' **********************/',
+'function set_type()',
+'{',
+'var type, subject, list;',
+'subject = apex.item(''P1_SUBJECT'').getValue();',
+'console.log(''subject=''+subject);',
+'',
+'if ( subject == ''agriculture'' )',
+'{    type = ''Population|% farmland|c015|c011|c015|round(c010*c011/100,1)|1|1''; }',
+'',
+'if ( subject == ''health'')',
+'{    type = ''Population|Doctors/1000 inh.|c015|c026|c015|round(c026,1)|1|1''; }',
+'',
+'if ( subject == ''energy'')',
+'{ type = ''Population|Energy use/inh.|c015|c024|c015|round(c024)|-1|1''; }',
+'',
+'if ( subject == ''population'' )',
+'{ type = ''Population|% growth in 10 years|c015|c034|c015|round(c034,1)|-1|1''; }',
+'',
+'if ( subject == ''mobility'')',
+'{ type = ''Population|Cars/1000 inh|c015|c033|c015|round(c033)|1|1''; }',
+'',
+'if ( !type ) ',
+'{ type = ''Area|Population density|c015|c024|c015|round(c015/c014*100)|-1|1''; }',
+'',
+'apex.item(''P1_TYPE'').setValue(type);',
+'',
+'list = type.split(''|'');',
+'',
+'console.log(type, list);',
+'apex.item(''P1_DESC1'').setValue(list[0]);',
+'apex.item(''P1_DESC2'').setValue(list[1]);',
+'desc1 = list[0];',
+'desc2 = list[1];',
+'}',
 ''))
 ,p_javascript_code_onload=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
 'init();',
@@ -9835,6 +9879,8 @@ wwv_flow_api.create_page(
 '    var ko = modules[1];',
 '    var $ = modules[2];',
 '',
+'    set_type();',
+'    ',
 '    console.log(''Retrieved data'')',
 '    chartData = data;',
 '',
@@ -10122,7 +10168,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'ADC'
-,p_last_upd_yyyymmddhh24miss=>'20160331222953'
+,p_last_upd_yyyymmddhh24miss=>'20160401211446'
 );
 wwv_flow_api.create_report_region(
  p_id=>wwv_flow_api.id(29848329031411527)
@@ -14625,7 +14671,7 @@ wwv_flow_api.create_page_item(
 ,p_item_plug_id=>wwv_flow_api.id(32149002886480862)
 ,p_item_default=>'Population'
 ,p_display_as=>'NATIVE_HIDDEN'
-,p_attribute_01=>'Y'
+,p_attribute_01=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(32150647977480909)
@@ -14634,7 +14680,7 @@ wwv_flow_api.create_page_item(
 ,p_item_plug_id=>wwv_flow_api.id(32149002886480862)
 ,p_item_default=>'Doctors/1000 inh'
 ,p_display_as=>'NATIVE_HIDDEN'
-,p_attribute_01=>'Y'
+,p_attribute_01=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(32151865204480924)
@@ -14902,6 +14948,7 @@ wwv_flow_api.create_page_da_action(
 'declare',
 '  l_list      apex_application_global.vc_arr2;',
 'begin',
+'  return;',
 '  :p1_type := case :p1_subject',
 '              when ''agriculture'' then  ''Population|% farmland|c015|c011|c015|round(c010*c011/100,1)|1|1''',
 '              when ''health''     then  ''Population|Doctors/1000 inh.|c015|c026|c015|round(c026,1)|1|1''',
@@ -14916,20 +14963,28 @@ wwv_flow_api.create_page_da_action(
 'end;',
 ''))
 ,p_attribute_02=>'P1_SUBJECT'
-,p_attribute_03=>'P1_TYPE'
+,p_attribute_03=>'P1_TYPE,P1_DESC1,P1_DESC2'
 ,p_attribute_04=>'N'
 ,p_stop_execution_on_error=>'Y'
 ,p_wait_for_result=>'Y'
 );
 wwv_flow_api.create_page_da_action(
- p_id=>wwv_flow_api.id(32159476561480981)
+ p_id=>wwv_flow_api.id(16468716484799801)
 ,p_event_id=>wwv_flow_api.id(32333865273174028)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>20
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'set_type();'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(32159476561480981)
+,p_event_id=>wwv_flow_api.id(32333865273174028)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
 ,p_execute_on_page_init=>'N'
 ,p_action=>'NATIVE_SUBMIT_PAGE'
 ,p_attribute_02=>'Y'
-,p_stop_execution_on_error=>'Y'
 );
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(15503709089850228)
