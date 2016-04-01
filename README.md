@@ -21,6 +21,9 @@ For other areas a distribution is shown in the form of a sunburst chart. This ch
 
 Next to the sunburst chart a map shows the same data. Both the chart and the map are clickable. 
 
+##More information on a country
+To obtain more information on a country the Wikipedia button opens a separate Tab or Window containing the Wikipedia page for the current country. 
+
 ##Choosing of countries and subjects
 A country can be chosen in a number of ways. 
 - You can use the select list on top
@@ -28,7 +31,10 @@ A country can be chosen in a number of ways.
 - You can click on a country on the map
 - You can click on the name of a country in the comparison table
 
+The World button can be used to select World directly. 
+
 To change the subject the select list can be used. 
+
 
 ##Display of numbers
 Some numbers are very large, like the population of China or the area of Russia. These numbers are made more readable by using letters for each power of thousands, the same way in computer memory. So 1K = 1,000 and 1M = 1,000,000. The next levels are G and T. 
@@ -46,6 +52,7 @@ The additional country information like english country names, ISO codes and hie
 - The formatting of the numbers is done after the rendering of the report, otherwise the sorting would be incorrect ( alphnumerically)
 - The sorting is always initially descending, so the largest values come first ( the largest country, the largest population etc.)
 - The flags are shown using a single image with sprites. 
+- The HTML for the bars is generated in the query. The percentage is not shown below a certain value. 
 
 ##Information cards
 The information cards are created with Named Column Report templates combined with the appropiate CSS. The query supplies the numbers, text and icons, depending on the subject. 
