@@ -11,7 +11,7 @@ Directly below is an area that presents the key data for the chosen country and 
 
 Below this the content is different for countries and other areas. 
 
-For countries a comparison table is shown with the data for the chosen subject. The chosen country and four adjacent countries are shown, as are the highest and lowest 3 ranking countries are shown. It is possible to click the headers to sort on that column. You can select another country by clicking on the name in the table. For population and agriculture a bar is in the table with resp. age distribution and land usage. 
+For countries a comparison table is shown with the data for the chosen subject. The chosen country and four adjacent countries are shown, as are the highest and lowest 3 ranking countries. It is possible to click the headers to sort on a column, always descending at first. You can select another country by clicking on the name in the table. For population and agriculture there is a horizontal stacked bar for each country with resp. age distribution and land usage. 
 
 Next to this table a map is shown, in which the current country is highlighted in red. 
 
@@ -19,7 +19,7 @@ Below this a line chart shows the most important trends on the current subject o
 
 For other areas a distribution is shown in the form of a sunburst chart. This chart shows for each area a number and a color. For population for example, the size of the pieces shows the size of the population and the color shows the population growth. 
 
-Next to the sunburst chart a map shows the same data. Both the chart and the map are clickable. 
+Next to the sunburst chart a map shows the same data. Both the chart and the map are clickable. NB You may have to click twice on an element of the sunburst chart. 
 
 ##More information on a country
 To obtain more information on a country the Wikipedia button opens a separate Tab or Window containing the Wikipedia page for the current country. 
@@ -56,14 +56,14 @@ The additional country information like english country names, ISO codes and hie
 
 ##Information cards
 The information cards are created with Named Column Report templates combined with the appropiate CSS. The query supplies the numbers, text and icons, depending on the subject. 
-There are also some media queries in the CSS so the cards react to the width of the window. 
+There are some media queries in the CSS to make the cards react with responsiveness to the width of the window. 
 
 ##Sunburst Chart
 This chart is an Oracle JET component. The JSON data is collected in an application process that is called with apex.server.process. The correct timing is ensured by using JQuery promises. JavaScript is used to enrich the data ( text for popup) and to implement the click events on the SVG elements for the drilldown. 
 The legend is a seperate Oracle JET component.
 
 #Known issues
-- Sunburst Chart: sometimes choosing the country by clicking does not work
+- Sunburst Chart: sometimes choosing the country or area by clicking does not work. Most of the times clicking twice works. 
 - Maps: sometimes in Chrome and Safari the maps show an error message. Making the window larger may and reloading may fix this problem.
 - Maps: Separate maps for Asia and Australia are not available, so for these area's the World map is shown
 - Sometimes specific data are not available for a country. In the table the corresponding cells are left empty
